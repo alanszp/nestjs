@@ -1,9 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import * as request from "supertest";
 import { ProductModule } from "./product.module";
 import { Product } from "./models/Product";
+import { configureApp } from "../configureApp";
 
 describe("Product API Integration Tests", () => {
   let app: INestApplication;
@@ -22,7 +23,7 @@ describe("Product API Integration Tests", () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true }));
+    configureApp(app);
     await app.init();
   });
 
