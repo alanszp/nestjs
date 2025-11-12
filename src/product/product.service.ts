@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Product } from "./models/product";
+import { Product } from "./models/Product";
+import { CreateProductInput } from "./models/inputs/CreateProductInput";
 
 @Injectable()
 export class ProductService {
@@ -10,9 +11,10 @@ export class ProductService {
     private readonly productRepository: Repository<Product>
   ) {}
 
-  async create(product: Product): Promise<Product> {
-    const newProduct = this.productRepository.create(product);
-    return this.productRepository.save(newProduct);
+  async create(input: CreateProductInput): Promise<Product> {
+    await input.validate();
+    const toBeCreated = new Product().fromInput(input);
+    return this.productRepository.save(toBeCreated);
   }
 
   async findAll(): Promise<Product[]> {

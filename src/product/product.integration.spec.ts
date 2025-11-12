@@ -3,7 +3,7 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import * as request from "supertest";
 import { ProductModule } from "./product.module";
-import { Product } from "./models/product";
+import { Product } from "./models/Product";
 
 describe("Product API Integration Tests", () => {
   let app: INestApplication;

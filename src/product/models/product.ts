@@ -1,14 +1,9 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  BeforeInsert,
-  BeforeUpdate,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 import { IsUrl, IsString, IsNotEmpty, IsNumber, Min } from "class-validator";
+import { CreateProductInput } from "./inputs/CreateProductInput";
 
 @Entity()
-export class Product {
+export class Product extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -31,11 +26,11 @@ export class Product {
   @Min(0.01)
   price: number;
 
-  @BeforeInsert()
-  @BeforeUpdate()
-  normalizeTitle(): void {
-    if (this.title) {
-      this.title = this.title.toUpperCase();
-    }
+  fromInput(input: CreateProductInput): Product {
+    this.imageUrl = input.imageUrl;
+    this.title = input.title.toUpperCase();
+    this.description = input.description;
+    this.price = input.price;
+    return this;
   }
 }
