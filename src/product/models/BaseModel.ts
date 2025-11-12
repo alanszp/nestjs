@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { ModelValidationError } from "src/errors/ModelValidationError";
+import { ModelValidationError } from "../../errors/ModelValidationError";
 
 export abstract class BaseModel {
   public async validate(): Promise<void> {

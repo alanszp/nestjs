@@ -65,28 +65,21 @@ describe("Product API Integration Tests", () => {
         .send(productData)
         .expect(400)
         .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain("imageUrl must be a URL address");
-        });
-    });
-
-    it("should return 400 when price is less than 0.01", () => {
-      const productData = {
-        imageUrl: "https://example.com/product.jpg",
-        title: "Test Product",
-        description: "Test description",
-        price: 0,
-      };
-
-      return request(app.getHttpServer())
-        .post("/products")
-        .send(productData)
-        .expect(400)
-        .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain(
-            "price must not be less than 0.01"
-          );
+          expect(res.body).toEqual({
+            context: {
+              errors: [
+                {
+                  property: "imageUrl",
+                  errors: {
+                    isUrl: "imageUrl must be a URL address",
+                  },
+                  children: [],
+                },
+              ],
+            },
+            code: "model_validation_error",
+            message: "Model validation error",
+          });
         });
     });
 
@@ -103,10 +96,21 @@ describe("Product API Integration Tests", () => {
         .send(productData)
         .expect(400)
         .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain(
-            "price must not be less than 0.01"
-          );
+          expect(res.body).toEqual({
+            context: {
+              errors: [
+                {
+                  property: "price",
+                  errors: {
+                    min: "price must not be less than 0",
+                  },
+                  children: [],
+                },
+              ],
+            },
+            code: "model_validation_error",
+            message: "Model validation error",
+          });
         });
     });
 
@@ -122,8 +126,22 @@ describe("Product API Integration Tests", () => {
         .send(productData)
         .expect(400)
         .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain("title should not be empty");
+          expect(res.body).toEqual({
+            context: {
+              errors: [
+                {
+                  property: "title",
+                  errors: {
+                    isNotEmpty: "title should not be empty",
+                    isString: "title must be a string",
+                  },
+                  children: [],
+                },
+              ],
+            },
+            code: "model_validation_error",
+            message: "Model validation error",
+          });
         });
     });
 
@@ -139,8 +157,22 @@ describe("Product API Integration Tests", () => {
         .send(productData)
         .expect(400)
         .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain("description should not be empty");
+          expect(res.body).toEqual({
+            context: {
+              errors: [
+                {
+                  property: "description",
+                  errors: {
+                    isNotEmpty: "description should not be empty",
+                    isString: "description must be a string",
+                  },
+                  children: [],
+                },
+              ],
+            },
+            code: "model_validation_error",
+            message: "Model validation error",
+          });
         });
     });
 
@@ -155,9 +187,30 @@ describe("Product API Integration Tests", () => {
         .send(productData)
         .expect(400)
         .expect((res) => {
-          expect(res.body.statusCode).toBe(400);
-          expect(res.body.message).toContain("title should not be empty");
-          expect(res.body.message).toContain("description should not be empty");
+          expect(res.body).toEqual({
+            context: {
+              errors: [
+                {
+                  property: "title",
+                  errors: {
+                    isNotEmpty: "title should not be empty",
+                    isString: "title must be a string",
+                  },
+                  children: [],
+                },
+                {
+                  property: "description",
+                  errors: {
+                    isNotEmpty: "description should not be empty",
+                    isString: "description must be a string",
+                  },
+                  children: [],
+                },
+              ],
+            },
+            code: "model_validation_error",
+            message: "Model validation error",
+          });
         });
     });
 

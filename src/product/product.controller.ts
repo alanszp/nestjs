@@ -3,7 +3,6 @@ import {
   Post,
   Get,
   Body,
-  Logger,
   HttpException,
   HttpStatus,
 } from "@nestjs/common";
@@ -13,12 +12,10 @@ import {
   CreateProductInput,
   CreateProductInputBody,
 } from "./models/inputs/CreateProductInput";
-import { ModelValidationError } from "src/errors/ModelValidationError";
+import { ModelValidationError } from "../errors/ModelValidationError";
 
 @Controller("products")
 export class ProductController {
-  private readonly logger = new Logger("ProductService");
-
   constructor(private readonly productService: ProductService) {}
 
   @Post()
@@ -27,7 +24,9 @@ export class ProductController {
       return await this.productService.create(new CreateProductInput(product));
     } catch (error) {
       if (error instanceof ModelValidationError) {
-        throw new HttpException(error.toJSON(), HttpStatus.BAD_REQUEST);
+        throw new HttpException(error.toJSON(), HttpStatus.BAD_REQUEST, {
+          cause: error,
+        });
       }
 
       throw error;

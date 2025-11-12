@@ -1,11 +1,4 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsUrl,
-  Min,
-  validate,
-} from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, IsUrl, Min } from "class-validator";
 import { BaseModel } from "../BaseModel";
 
 export interface CreateProductInputBody {
